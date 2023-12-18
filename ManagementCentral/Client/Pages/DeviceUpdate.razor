@@ -1,0 +1,46 @@
+﻿@page "/deviceupdate/{DeviceId}"
+
+<h3>Update Device</h3>
+
+<EditForm Model="@Device" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Location</th>
+                <th scope="col">Date</th>
+                <th scope="col">Type</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="row">@Device.DeviceId</td>
+                <td scope="row">
+                    <InputSelect id="Location" @bind-Value="Device.Location" class="form-control col-md-8">
+                        <option value="Hangzhou">Hangzhou</option>
+                        <option value="Suzhou">Suzhou</option>
+                        <option value="Wuhan">Wuhan</option>
+                        <option value="Shanghai">Shanghai</option>
+                    </InputSelect>
+                </td>
+                <td scope="row">
+                    <InputDate id="Date" @bind-Value="Device.Date" class="form-control col-md-8"></InputDate>
+                    </td>
+                <td scope="row">
+                    <InputText id="Type" @bind-Value="Device.Type" class="form-control col-md-8"></InputText>
+                    <ValidationMessage For="@(() => Device.Type)" />
+                    </td>
+                <td scope="row">
+                    <InputSelect id="Status" @bind-Value="Device.Status" class="form-control col-md-8">
+                        <option value="Online">Online</option>
+                        <option value="Offline">Offline</option>
+                    </InputSelect>
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+    <a href="@($"dashboard")" class="btn btn-outline-primary">Back to Device list</a>&nbsp;
+    <button type="submit" class="btn btn-primary me-1">Save</button>
+</EditForm>
