@@ -1,4 +1,5 @@
 ﻿@page "/deviceadd"
+@using ManagementCentral.Shared.Domain
 
 <h3>Add Device</h3>
 
@@ -18,10 +19,14 @@
                 <tr>
                     <td scope="row">
                         <InputSelect id="Location" @bind-Value="Device.Location" class="form-control col-md-8">
-                            <option value="Hangzhou">Hangzhou</option>
+                            @foreach(var location in Enum.GetValues(typeof(Location)))
+                            {
+                                <option value="@location">@location</option>
+                            }
+                            @* <option value="Hangzhou">Hangzhou</option>
                             <option value="Suzhou">Suzhou</option>
                             <option value="Wuhan">Wuhan</option>
-                            <option value="Shanghai">Shanghai</option>
+                            <option value="Shanghai">Shanghai</option> *@
                         </InputSelect>
                     </td>
                     <td scope="row">
@@ -33,8 +38,12 @@
                     </td>
                     <td scope="row">
                         <InputSelect id="Status" @bind-Value="Device.Status" class="form-control col-md-8">
-                            <option value="Online">Online</option>
-                            <option value="Offline">Offline</option>
+                            @foreach (var status in Enum.GetValues(typeof(Status)))
+                            {
+                                <option value="@status">@status</option>
+                            }
+                            @* <option value="Online">Online</option>
+                            <option value="Offline">Offline</option> *@
                         </InputSelect>
                     </td>
                 </tr>

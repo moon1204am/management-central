@@ -20,9 +20,9 @@ namespace ManagementCentral.Client.Pages
             //base.OnInitialized();
         }
 
-        protected void Delete(string deviceId)
+        protected void Delete(int deviceId)
         {
-            DeviceDataService.DeleteDevice(int.Parse(deviceId));
+            DeviceDataService.DeleteDevice(deviceId);
             NavigationManager.NavigateTo($"/dashboard");
         }
     }

@@ -1,7 +1,7 @@
 ﻿using ManagementCentral.Client.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace ManagementCentral.Client.Pages
+namespace ManagementCentral.Client.Components
 {
     public partial class DailyStats
     {
