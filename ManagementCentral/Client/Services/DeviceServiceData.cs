@@ -49,8 +49,8 @@ namespace ManagementCentral.Client.Services
 
         public async Task<IEnumerable<Device>?> GetDevices()
         {
-            var devicesResponse = await _httpClient.GetStreamAsync($"/devices");
-            return await JsonSerializer.DeserializeAsync<IEnumerable<Device>>(devicesResponse, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            //var devicesResponse = await _httpClient.GetStreamAsync($"/devices");
+            return await JsonSerializer.DeserializeAsync<IEnumerable<Device>>(await _httpClient.GetStreamAsync($"/devices"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
             //return list;
         }
