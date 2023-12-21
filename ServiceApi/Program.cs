@@ -1,4 +1,18 @@
+using DeviceApi;
+using DeviceApi.Endpoints;
+using Microsoft.EntityFrameworkCore;
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//builder.Services.AddDbContext<DeviceDbContext>(options => {
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DeviceDbContext"));
+//});
+
+builder.Services.AddDbContext<DeviceDbContext>(options => {
+    options.UseSqlServer(
+        builder.Configuration["ConnectionStrings:DefaultConnection"]);
+});
 
 var specOrigin = "MySpecOrigin";
 
@@ -48,14 +62,16 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-app.MapGet("/device", () => "Getting a device from API");
+//app.MapGet("/device", () => "Getting a device from API");
 
-app.MapGet("/device/{deviceId}/button/{buttonId}", (int deviceId, int buttonId) => $"Device id {deviceId} and Button id {buttonId}");
+//app.MapGet("/device/{deviceId}/button/{buttonId}", (int deviceId, int buttonId) => $"Device id {deviceId} and Button id {buttonId}");
 
-app.MapGet("/device/{deviceId}", (int deviceId) =>
-{
+//app.MapGet("/device/{deviceId}", (int deviceId) =>
+//{
 
-});
+//});
+
+app.RegisterUserEndpoint();
 
 app.UseCors(specOrigin);
 

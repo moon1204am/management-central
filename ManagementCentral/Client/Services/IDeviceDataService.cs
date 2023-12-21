@@ -4,14 +4,14 @@ namespace ManagementCentral.Client.Services
 {
     public interface IDeviceDataService
     {
-        List<Device> GetDevices();
+        Task<IEnumerable<Device>?> GetDevices();
 
-        Device? GetDevice(int Id);
+        Task<Device?> GetDevice(int id);
 
-        void DeleteDevice(int id);
+        Task DeleteDevice(int id);
 
-        void UpdateDevice(Device device);
+        Task UpdateDevice(Device updatedDevice);
 
-        void AddDevice(Device device);
+        Task<Device?> AddDevice(Device device);
     }
 }

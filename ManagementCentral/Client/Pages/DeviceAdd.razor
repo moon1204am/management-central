@@ -19,7 +19,7 @@
                 <tr>
                     <td scope="row">
                         <InputSelect id="Location" @bind-Value="Device.Location" class="form-control col-md-8">
-                            @foreach(var location in Enum.GetValues(typeof(Location)))
+                            @foreach(var location in Enum.GetValues(typeof(City)))
                             {
                                 <option value="@location">@location</option>
                             }

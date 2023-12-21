@@ -14,15 +14,15 @@ namespace ManagementCentral.Client.Pages
         public string DeviceId { get; set; }
         public Device Device { get; set; } = new Device();
 
-        protected override void OnInitialized()
+        protected async override Task OnInitializedAsync()
         {
-            Device = DeviceDataService.GetDevice(int.Parse(DeviceId));
+            Device = await DeviceDataService.GetDevice(int.Parse(DeviceId));
             //base.OnInitialized();
         }
 
-        protected void Delete(int deviceId)
+        protected async Task Delete(int deviceId)
         {
-            DeviceDataService.DeleteDevice(deviceId);
+            await DeviceDataService.DeleteDevice(deviceId);
             NavigationManager.NavigateTo($"/dashboard");
         }
     }

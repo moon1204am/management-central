@@ -14,10 +14,10 @@ namespace ManagementCentral.Client.Components
         [Inject]
         public IDeviceDataService? DeviceDataService { get; set; }
 
-        protected override void OnInitialized()
+        protected async override Task OnInitializedAsync()
         {
             base.OnInitialized();
-            Devices = DeviceServiceData.DeviceList;
+            Devices = (await DeviceDataService.GetDevices()).ToList();
         }
     }
 }

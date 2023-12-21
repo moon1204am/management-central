@@ -9,9 +9,9 @@ namespace ManagementCentral.Client.Components
         public IDeviceDataService DeviceDataService { get; set; }
         public int NumberOfDevices { get; set; }
 
-        protected override void OnInitialized()
+        protected async override Task OnInitializedAsync()
         {
-            NumberOfDevices = DeviceDataService.GetDevices().Count;
+            NumberOfDevices = (await DeviceDataService.GetDevices()).Count();
             base.OnInitialized();
         }
     }

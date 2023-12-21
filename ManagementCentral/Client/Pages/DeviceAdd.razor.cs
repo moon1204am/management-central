@@ -19,7 +19,7 @@ namespace ManagementCentral.Client.Pages
 
         protected async Task HandleValidSubmit()
         {
-            DeviceDataService.AddDevice(Device);
+            await DeviceDataService.AddDevice(Device);
             NavigationManager.NavigateTo($"/dashboard");
         }
     }

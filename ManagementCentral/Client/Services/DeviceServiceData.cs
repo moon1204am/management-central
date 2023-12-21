@@ -1,87 +1,64 @@
 ﻿using ManagementCentral.Client.Pages;
 using ManagementCentral.Shared.Domain;
+using System.Text;
+using System.Text.Json;
 
 namespace ManagementCentral.Client.Services
 {
     public class DeviceServiceData : IDeviceDataService
     {
-        public static List<Device> DeviceList { get; set; } = new List<Device>();
+        private readonly HttpClient _httpClient;
 
-        public DeviceServiceData()
+        //public static List<Device> DeviceList { get; set; } = new List<Device>();
+
+        public DeviceServiceData(HttpClient httpClient)
         {
-
-            DeviceList.Add(new Device()
-            {
-                DeviceId = 1,
-                Location = Location.Hangzhou,
-                Date = new DateTime(),
-                Type = "DeviceType1",
-                Status = Status.Offline
-            });
-
-            DeviceList.Add(new Device()
-            {
-                DeviceId = 2,
-                Location = Location.Wuhan,
-                Date = new DateTime(),
-                Type = "DeviceType2",
-                Status = Status.Online
-            });
-
-            DeviceList.Add(new Device()
-            {
-                DeviceId = 3,
-                Location = Location.Suzhou,
-                Date = new DateTime(),
-                Type = "DeviceType3",
-                Status = Status.Online
-            });
-
-            DeviceList.Add(new Device()
-            {
-                DeviceId = 4,
-                Location = Location.Shanghai,
-                Date = new DateTime(),
-                Type = "DeviceType4",
-                Status = Status.Offline
-            });
+            _httpClient = httpClient;
         }
-        public void AddDevice(Device device)
+        public async Task<Device?> AddDevice(Device device)
         {
-            Random rnd = new Random();
-            device.DeviceId = rnd.Next(100000);
-            DeviceList.Add(device);
-        }
-
-        public void DeleteDevice(int id)
-        {
-            var deviceToDelete = DeviceList.FirstOrDefault(d => d.DeviceId == id);
-            if(deviceToDelete != null) 
-            { 
-                DeviceList.Remove(deviceToDelete);
+            // serialize device object to json
+            var deviceJson = new StringContent(JsonSerializer.Serialize(device), Encoding.UTF8, "application/json");
+            // call api with json
+            var response = await _httpClient.PostAsync("/deviceadd", deviceJson);
+            // if success, deserialize the created device object and return it
+            if(response.IsSuccessStatusCode)
+            {
+                return await JsonSerializer.DeserializeAsync<Device>(await response.Content.ReadAsStreamAsync());
             }
+            return null;
         }
 
-        public Device? GetDevice(int id)
+        public async Task DeleteDevice(int id)
         {
-            return DeviceList.FirstOrDefault(d => d.DeviceId == id);
+            //var deviceToDelete = GetDevice(id);
+            //if(deviceToDelete != null)
+            //{
+            //    await _httpClient.DeleteAsync($"/devicedelete/{id}");
+            //}
+
+            await _httpClient.DeleteAsync($"/devicedelete/{id}");
         }
 
-        public List<Device> GetDevices()
+        public async Task<Device?> GetDevice(int id)
         {
-            return DeviceList;
+            var deviceResponse = await _httpClient.GetStreamAsync($"/device/{id}");
+
+            return await JsonSerializer.DeserializeAsync<Device>(deviceResponse, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
-        public void UpdateDevice(Device updatedDevice)
+        public async Task<IEnumerable<Device>?> GetDevices()
         {
-            var device = DeviceList.FirstOrDefault(d => d.DeviceId == updatedDevice.DeviceId);
-            if(device != null)
-            {
-                device.Location = updatedDevice.Location;
-                device.Date = updatedDevice.Date;
-                device.Type = updatedDevice.Type;
-                device.Status = updatedDevice.Status;
-            }
+            var devicesResponse = await _httpClient.GetStreamAsync($"/devices");
+            return await JsonSerializer.DeserializeAsync<IEnumerable<Device>>(devicesResponse, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+            //return list;
+        }
+
+        public async Task UpdateDevice(Device updatedDevice)
+        {
+            var deviceJson = new StringContent(JsonSerializer.Serialize(updatedDevice), Encoding.UTF8, "application/json");
+            await _httpClient.PutAsync("/deviceupdate", deviceJson);
         }
     }
 }

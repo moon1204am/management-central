@@ -17,8 +17,12 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().Cre
 builder.Services.AddApiAuthorization();
 
 var apiBaseAddress = "https://localhost:7169";
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseAddress) });
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseAddress) });
+builder.Services.AddHttpClient<IDeviceDataService, DeviceServiceData>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseAddress/*builder.HostEnvironment.BaseAddress*/);
+});
 
-builder.Services.AddSingleton<IDeviceDataService, DeviceServiceData>();
+builder.Services.AddScoped<IDeviceDataService, DeviceServiceData>();
 
 await builder.Build().RunAsync();

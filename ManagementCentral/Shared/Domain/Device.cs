@@ -10,7 +10,8 @@ namespace ManagementCentral.Shared.Domain
     public class Device
     {
         public int DeviceId { get; set; }
-        public Location Location { get; set; }
+        public City Location { get; set; } = default!;
+        public int CityId { get; set; }
         public DateTime Date { get; set; }
         [Required]
         [StringLength(20, MinimumLength = 5)]
