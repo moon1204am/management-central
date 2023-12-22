@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeviceApi.Migrations
 {
-    [DbContext(typeof(DeviceDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20231221151243_InitialMigration")]
     partial class InitialMigration
     {

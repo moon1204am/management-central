@@ -9,8 +9,11 @@ namespace ManagementCentral.Client.Pages
         [Inject]
         public IDeviceDataService DeviceDataService { get; set; }
         [Inject]
+        public ICityDataService CityDataService { get; set; }
+        [Inject]
         public NavigationManager NavigationManager { get; set; }
         public Device Device { get; set; } = new Device();
+        public List<City> Cities { get; set; }
 
         protected override void OnInitialized()
         {
@@ -19,6 +22,7 @@ namespace ManagementCentral.Client.Pages
 
         protected async Task HandleValidSubmit()
         {
+            Cities = (await CityDataService.GetCitiesAsync()).ToList();
             await DeviceDataService.AddDevice(Device);
             NavigationManager.NavigateTo($"/dashboard");
         }

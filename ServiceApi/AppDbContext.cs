@@ -5,14 +5,14 @@ using System.Reflection;
 
 namespace DeviceApi
 {
-    public class DeviceDbContext : DbContext
+    public class AppDbContext : DbContext
     {
-        public DeviceDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions options) : base(options)
         {
         }
 
         public DbSet<Device>? Device { get; set; } = null!;
-        public DbSet<City>? Location { get; set; } = null!;
+        public DbSet<City>? City { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,17 +1,20 @@
 ﻿using ManagementCentral.Client.Pages;
 using ManagementCentral.Shared.Domain;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 
 namespace ManagementCentral.Client.Services
 {
-    public class DeviceServiceData : IDeviceDataService
+    public class DeviceDataService : IDeviceDataService
     {
         private readonly HttpClient _httpClient;
 
         //public static List<Device> DeviceList { get; set; } = new List<Device>();
 
-        public DeviceServiceData(HttpClient httpClient)
+        public DeviceDataService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -49,10 +52,21 @@ namespace ManagementCentral.Client.Services
 
         public async Task<IEnumerable<Device>?> GetDevices()
         {
-            //var devicesResponse = await _httpClient.GetStreamAsync($"/devices");
-            return await JsonSerializer.DeserializeAsync<IEnumerable<Device>>(await _httpClient.GetStreamAsync($"/devices"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            var devicesResponse = await _httpClient.GetStreamAsync($"/devices");
+            var list = await JsonSerializer.DeserializeAsync<IEnumerable<Device>>(devicesResponse, new JsonSerializerOptions() { /*PropertyNameCaseInsensitive = true*/ PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
-            //return list;
+            return list;
+
+            //var request = new HttpRequestMessage(HttpMethod.Get, "/devices");
+            //_httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            //response.EnsureSuccessStatusCode();
+
+            //var stream = await response.Content.ReadAsStreamAsync();
+            //var result = JsonSerializer.Deserialize<IEnumerable<Device>>(stream, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
+            //return result;
         }
 
         public async Task UpdateDevice(Device updatedDevice)

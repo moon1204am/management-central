@@ -17,7 +17,8 @@ namespace ManagementCentral.Client.Components
         protected async override Task OnInitializedAsync()
         {
             base.OnInitialized();
-            Devices = (await DeviceDataService.GetDevices()).ToList();
-        }
+            Devices = (await DeviceDataService!.GetDevices())?.ToList()!;
+            Console.ReadLine();
+            }
     }
 }

@@ -1,35 +1,27 @@
 using DeviceApi;
 using DeviceApi.Endpoints;
+using DeviceApi.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddDbContext<DeviceDbContext>(options => {
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("DeviceDbContext"));
-//});
-
-builder.Services.AddDbContext<DeviceDbContext>(options => {
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
     options.UseSqlServer(
         builder.Configuration["ConnectionStrings:DefaultConnection"]);
 });
 
-var specOrigin = "MySpecOrigin";
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: specOrigin, policy =>
-    {
-        policy.WithOrigins("https://localhost:7098")
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-    });
-});
+//builder.Services.AddDbContext<DeviceDbContext>(options =>
+//              options.UseSqlServer(builder.Configuration.GetConnectionString("DeviceDbContext")
+//              ?? throw new InvalidOperationException("Connection string 'DeviceDbContext' not found.")));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddRepositories();
+builder.Services.AddCorsPolicy();
 
 var app = builder.Build();
 
@@ -71,9 +63,10 @@ app.MapGet("/weatherforecast", () =>
 
 //});
 
-app.RegisterUserEndpoint();
+app.RegisterDeviceUserEndpoint();
+app.RegisterCountryUserEndpoint();
 
-app.UseCors(specOrigin);
+app.UseCors(ApiConstants.policyName);
 
 app.Run();
 
