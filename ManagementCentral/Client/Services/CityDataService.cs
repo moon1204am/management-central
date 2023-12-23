@@ -7,9 +7,10 @@ namespace ManagementCentral.Client.Services
     {
         private readonly HttpClient _httpClient;
 
-        public CityDataService(HttpClient httpClient)
+        public CityDataService(/*HttpClient httpClient*/ IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            //_httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("CitiesClient");
         }
 
         public async Task<IEnumerable<City>> GetCitiesAsync()

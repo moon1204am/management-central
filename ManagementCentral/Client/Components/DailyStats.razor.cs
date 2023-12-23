@@ -7,12 +7,13 @@ namespace ManagementCentral.Client.Components
     {
         [Inject]
         public IDeviceDataService DeviceDataService { get; set; }
+        [Parameter]
         public int NumberOfDevices { get; set; }
 
-        protected async override Task OnInitializedAsync()
-        {
-            NumberOfDevices = (await DeviceDataService.GetDevices()).Count();
-            base.OnInitialized();
-        }
+        //protected async override Task OnInitializedAsync()
+        //{
+        //    NumberOfDevices = (await DeviceDataService.GetDevices()).Count();
+        //    base.OnInitialized();
+        //}
     }
 }

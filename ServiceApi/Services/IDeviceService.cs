@@ -4,10 +4,10 @@ namespace DeviceApi.Services
 {
     public interface IDeviceService
     {
-        Task AddDeviceAsync(Device device);
-        void DeleteDeviceAsync(int deviceId);
+        Task<Device> AddDeviceAsync(Device device);
+        Task DeleteDeviceAsync(int deviceId);
         Task<Device?> GetDeviceAsync(int deviceId);
         Task<IEnumerable<Device>> GetDevicesAsync();
-        void UpdateDeviceAsync(Device device);
+        Task UpdateDeviceAsync(Device device);
     }
 }

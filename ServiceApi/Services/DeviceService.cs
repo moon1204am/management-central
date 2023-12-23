@@ -21,20 +21,24 @@ namespace DeviceApi.Services
         {
             return await _unitOfWork.DeviceRepository.GetAsync(deviceId);
         }
-        public async Task AddDeviceAsync(Device device)
+        public async Task<Device> AddDeviceAsync(Device device)
         {
             await _unitOfWork.DeviceRepository.AddAsync(device);
             await _unitOfWork.SaveChangesAsync();
+            return device;
         }
-        public async void UpdateDeviceAsync(Device device)
+        public async Task UpdateDeviceAsync(Device device)
         {
             _unitOfWork.DeviceRepository.Update(device);
             await _unitOfWork.SaveChangesAsync();
         }
-        public async void DeleteDeviceAsync(int deviceId)
+        public async Task DeleteDeviceAsync(int deviceId)
         {
             var deviceToDelete = await _unitOfWork.DeviceRepository.GetAsync(deviceId);
-            if (deviceToDelete != null) _unitOfWork.DeviceRepository.Delete(deviceToDelete);
+            if (deviceToDelete != null) 
+            { 
+                _unitOfWork.DeviceRepository.Delete(deviceToDelete); 
+            }
             await _unitOfWork.SaveChangesAsync();
         }
     }

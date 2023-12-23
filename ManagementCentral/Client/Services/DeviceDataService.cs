@@ -14,9 +14,10 @@ namespace ManagementCentral.Client.Services
 
         //public static List<Device> DeviceList { get; set; } = new List<Device>();
 
-        public DeviceDataService(HttpClient httpClient)
+        public DeviceDataService(/*HttpClient httpClient*/ IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            //_httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("DevicesClient");
         }
         public async Task<Device?> AddDevice(Device device)
         {
@@ -53,7 +54,7 @@ namespace ManagementCentral.Client.Services
         public async Task<IEnumerable<Device>?> GetDevices()
         {
             var devicesResponse = await _httpClient.GetStreamAsync($"/devices");
-            var list = await JsonSerializer.DeserializeAsync<IEnumerable<Device>>(devicesResponse, new JsonSerializerOptions() { /*PropertyNameCaseInsensitive = true*/ PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            var list = await JsonSerializer.DeserializeAsync<IEnumerable<Device>>(devicesResponse, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true /*PropertyNamingPolicy = JsonNamingPolicy.CamelCase*/ });
 
             return list;
 

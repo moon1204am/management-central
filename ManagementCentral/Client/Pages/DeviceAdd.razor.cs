@@ -13,17 +13,31 @@ namespace ManagementCentral.Client.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
         public Device Device { get; set; } = new Device();
-        public List<City> Cities { get; set; }
+        [Parameter]
+        public string? DeviceId { get; set; }
+        public List<City> Cities { get; set; } = new List<City>();
 
-        protected override void OnInitialized()
+        protected async override Task OnInitializedAsync()
         {
-            base.OnInitialized();
+            await base.OnInitializedAsync();
+            Cities = (await CityDataService.GetCitiesAsync()).ToList();
+
+            int.TryParse(DeviceId, out var deviceId);
+            if (deviceId != 0)
+                Device = await DeviceDataService.GetDevice(int.Parse(DeviceId));
         }
 
         protected async Task HandleValidSubmit()
         {
-            Cities = (await CityDataService.GetCitiesAsync()).ToList();
-            await DeviceDataService.AddDevice(Device);
+            if(Device.DeviceId == 0)
+            {
+                Device = await DeviceDataService.AddDevice(Device);
+            }
+            else
+            {
+                await DeviceDataService.UpdateDevice(Device);
+            }
+            
             NavigationManager.NavigateTo($"/dashboard");
         }
     }

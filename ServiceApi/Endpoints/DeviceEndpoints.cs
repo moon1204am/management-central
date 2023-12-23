@@ -24,15 +24,15 @@ namespace DeviceApi.Endpoints
 
             devices.MapPost("/deviceadd", async (Device device, IServiceManager serviceManager) =>
             {
-                await serviceManager.DeviceService.AddDeviceAsync(device);
+                return await serviceManager.DeviceService.AddDeviceAsync(device);
                 //Random rnd = new Random();
                 //device.DeviceId = rnd.Next(100000);
                 //Devices.DeviceList.Add(device);
             });
 
-            devices.MapDelete("/devicedelete", (int id, IServiceManager serviceManager) =>
+            devices.MapDelete("/devicedelete/{id}", async (int id, IServiceManager serviceManager) =>
             {
-                serviceManager.DeviceService.DeleteDeviceAsync(id);
+                await serviceManager.DeviceService.DeleteDeviceAsync(id);
                 //var deviceToDelete = Devices.DeviceList.FirstOrDefault(d => d.DeviceId == id);
                 //if (deviceToDelete != null)
                 //{
@@ -40,9 +40,9 @@ namespace DeviceApi.Endpoints
                 //}
             });
 
-            devices.MapPut("/deviceupdate", (Device device, IServiceManager serviceManager) =>
+            devices.MapPut("/deviceupdate", async (Device device, IServiceManager serviceManager) =>
             {
-                serviceManager.DeviceService.UpdateDeviceAsync(device);
+                await serviceManager.DeviceService.UpdateDeviceAsync(device);
                 //var deviceToUpdate = Devices.DeviceList.FirstOrDefault(d => d.DeviceId == deviceId);
                 //if (device != null)
                 //{

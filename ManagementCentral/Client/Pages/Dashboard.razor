@@ -1,5 +1,6 @@
 ﻿@page "/dashboard"
 <h3>Dashboard</h3>
 
-<DailyStats></DailyStats>
-<Devices></Devices>
+<DailyStats NumberOfDevices="NumberOfDevices"></DailyStats>
+@* <Devices DeviceList="Devices"></Devices> *@
+<DeviceList Devices="Devices"></DeviceList>

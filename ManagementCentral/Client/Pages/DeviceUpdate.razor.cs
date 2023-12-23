@@ -16,8 +16,8 @@ namespace ManagementCentral.Client.Pages
 
         protected async override Task OnInitializedAsync()
         {
+            await base.OnInitializedAsync();
             Device = await DeviceDataService.GetDevice(int.Parse(DeviceId));
-            base.OnInitialized();
         }
 
         protected async Task HandleValidSubmit()

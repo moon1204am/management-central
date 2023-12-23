@@ -14,12 +14,12 @@ namespace DeviceApi.Repositories
 
         public async Task<IEnumerable<Device>> GetAsync()
         {
-            return await _context.Device!.ToListAsync();
+            return await _context.Device!.Include(d => d.City).ToListAsync();
         }
 
         public async Task<Device?> GetAsync(int id)
         {
-            return await _context.Device!.FirstOrDefaultAsync(d => d.DeviceId == id);
+            return await _context.Device!.Include(d => d.City).FirstOrDefaultAsync(d => d.DeviceId == id);
         }
 
         public async Task AddAsync(Device device)
